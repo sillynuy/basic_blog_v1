@@ -1,0 +1,42 @@
+{% extends "blog_base.html" %}
+
+{% block title %}
+    Литературный Блог Никиты - Главная страница
+{% endblock %}
+
+{% block content %}
+    {% if posts %}
+        <h3>Всего записей в блоге: {{ posts.count }}</h3>
+        <h4>Первая запись: {{ oldest|date:"j E Y" }}</h4>
+        <h4>Последняя запись: {{ newest|date:"j E Y" }}</h4>
+        <ul>
+            {% for post in page_obj %}
+            <li>
+                <h3>{{ post.date_published|date:"j E Y, G:i:s" }}</h3>
+                <h2><a href="{% url 'blog:post' post.id %}">{{ post.headline }}</a></h2>
+                <p>{{ post.text|truncatewords:25 }}</p>
+                <p>Рейтинг: {{ post.rating }} (+{{ post.pos_marks }}-{{ post.neg_marks }})</p>
+            </li>
+            {% endfor %}
+        </ul>
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                    <a href="?page=1">На первую страницу</a>
+                    <a href="?page={{ page_obj.previous_page_number }}">Назад</a>
+                {% endif %}
+
+                <span class="current">
+                    Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+                </span>
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">Вперёд</a>
+                    <a href="?page={{ page_obj.paginator.num_pages }}">На последнюю страницу</a>
+                {% endif %}
+            </span>
+        </div>
+    {% else %}
+        <p>В блоге нет постов</p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "blog_base.html" %}
+
+{% block title %}
+{{ post.headline }} - Блог Никиты
+{% endblock %}
+
+{% block content %}
+    <h2>{{ post.headline }}</h2>
+
+    <a href="{% url 'blog:post_edit' post.id %}">Редактировать</a>
+    <a href="{% url 'blog:post_delete' post.id %}">Удалить</a>
+
+    <h3>{{ post.date_published|date:"j E Y, G:i:s" }}</h3>
+    <p>{{ post.text|linebreaks }}</p>
+    <p>Рейтинг поста: {{ post.rating }} (+{{ post.pos_marks }}-{{ post.neg_marks }})</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <input type="submit" name="set_mark_post" value="+">
+        <input type="submit" name="set_mark_post" value="-">
+    </form>
+    <h3>Добавить комментарий</h3>
+    <form method="post">
+        {% csrf_token %}
+        <table>
+            {{ comment_form }}
+        </table>
+        <input type="submit" value="Отправить" name="add_comment">
+    </form>
+    <h2>Комментарии</h2>
+    <h3>Всего комментариев к записи - {{ comments|length }}</h3>
+    {% if comments %}
+        {% for comment in comments %}
+            <h5>{{ comment.date_published }}</h5>
+            <h4>{{ comment.author }}</h4>
+            <p>{{ comment.text }}</p>
+        {% endfor %}
+    {% else %}
+        <p>Комментариев пока нет</p>
+    {% endif %}
+{% endblock %}

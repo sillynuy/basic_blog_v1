@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %} Литературный блог Никиты {% endblock %}</title>
+</head>
+<body>
+    {% block header %}
+        <h1>Литературный блог Никиты</h1>
+    {% include 'includes/menu.html' %}
+    {% endblock %}
+
+    {% block content %} {% endblock %}
+</body>
+</html>

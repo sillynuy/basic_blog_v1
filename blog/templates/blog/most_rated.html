@@ -1,0 +1,17 @@
+{% extends "blog_base.html" %}
+
+{% block content %}
+<h2>Топ записей по оценкам</h2>
+    {% if posts %}
+        {% for post in posts %}
+            <ul>
+                <li>
+                    <h3>{{ post.date_published|date:"j E Y, G:i:s" }}</h3>
+                    <h2><a href="{% url 'blog:post' post.id %}">{{ post.headline }}</a></h2>
+                    <p>{{ post.text|truncatewords:25 }}</p>
+                    <p>Рейтинг: {{ post.rating }} (+{{ post.pos_marks }}-{{ post.neg_marks }})</p>
+                </li>
+            </ul>
+        {% endfor %}
+    {% endif %}
+{% endblock %}

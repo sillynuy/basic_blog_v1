@@ -1,0 +1,14 @@
+{% extends 'blog_base.html' %}
+
+{% block title %}
+    Удаление поста
+{% endblock %}
+
+{% block content %}
+    <h2>Удалить пост <i>{{ post.headline }}</i>?</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <input type="submit" name="post_delete_confirmation" value="Да">
+        <input type="submit" name="post_delete_confirmation" value="Нет">
+    </form>
+{% endblock %}
