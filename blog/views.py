@@ -60,7 +60,7 @@ def post_details(request, post_id):
             form = SetMarkPostForm(request.POST)
             val = request.POST.get("set_mark_post")
             if val == '+':
-                Post.objects.filter(id=post_id).update(pos_marks=F("neg_marks") + 1)
+                Post.objects.filter(id=post_id).update(pos_marks=F("pos_marks") + 1)
             elif val == '-':
                 Post.objects.filter(id=post_id).update(neg_marks=F("neg_marks") + 1)
             Post.objects.filter(id=post_id).update(rating=F("pos_marks") - F("neg_marks"))
