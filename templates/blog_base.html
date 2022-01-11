@@ -7,7 +7,15 @@
 <body>
     {% block header %}
         <h1>Литературный блог Никиты</h1>
-    {% include 'includes/menu.html' %}
+        {% include 'includes/menu.html' %}
+        {% if user.is_authenticated %}
+            <h5>Привет, {{ user.username }}!</h5>
+            <p><a href="{% url 'logout' %}">Выйти</a></p>
+        {% else %}
+            <h5>Вы не авторизованы.</h5>
+            <a href="{% url 'login' %}">Войти</a>
+        {% endif %}
+
     {% endblock %}
 
     {% block content %} {% endblock %}
