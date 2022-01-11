@@ -5,7 +5,7 @@
     <a href="{% url 'blog:most_commented' %}">Самое комментируемое</a>
     <div>
         {% if user.is_authenticated %}
-            <h4>Привет, {{ user.username }}!</h4>
+            <h4>Профиль: <a href="{% url 'blog:profile' user.id %}">{{ user.username }}</a></h4>
             <p><a href="{% url 'logout' %}">Выйти</a></p>
         {% else %}
             <a href="{% url 'login' %}">Войти</a>
