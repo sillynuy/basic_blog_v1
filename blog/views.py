@@ -7,7 +7,7 @@ from django.core.paginator import Paginator
 from django.db.models import Count, Min, Max
 
 from .models import Comment, Post
-from .forms import AddCommentForm, AddPostForm, SetMarkPostForm
+from .forms import AddCommentForm, AddCommentFormAuth, AddPostForm, SetMarkPostForm
 
 
 def index(request):
@@ -34,12 +34,14 @@ def post_details(request, post_id):
         template = 'blog/post_detailed.html'
         mark_form = SetMarkPostForm()
         comment_form = AddCommentForm()
+        comment_form_auth = AddCommentFormAuth()
         mark_comment_form = SetMarkPostForm()
         comments = Comment.objects.filter(post=post_id)
         context = {
             'post': post,
             'mark_form': mark_form,
             'comment_form': comment_form,
+            'comment_form_auth': comment_form_auth,
             'comments': comments,
             'mark_comment_form': mark_comment_form,
         }

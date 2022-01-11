@@ -21,5 +21,9 @@ class AddCommentForm(forms.Form):
     text = forms.CharField(label='Комментарий', widget=forms.Textarea)
 
 
+class AddCommentFormAuth(forms.Form):
+    text = forms.CharField(label='Комментарий', widget=forms.Textarea)
+
+
 class ConfirmPostDelete(forms.Form):
     btn = forms.CharField()
