@@ -22,6 +22,7 @@ class AddCommentForm(forms.Form):
 
 
 class AddCommentFormAuth(forms.Form):
+    author = forms.CharField(widget=forms.HiddenInput(), required=False)
     text = forms.CharField(label='Комментарий', widget=forms.Textarea)
 
 

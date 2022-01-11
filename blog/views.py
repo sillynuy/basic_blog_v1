@@ -58,6 +58,17 @@ def post_details(request, post_id):
             )
             new_comment.save()
             return HttpResponseRedirect(reverse('blog:post', args=(post_id,)))
+        if 'add_comment_auth' in request.POST:
+            author = request.user.username
+            text = request.POST.get('text')
+            new_comment = Comment(
+                post=post,
+                author=author,
+                text=text,
+                date_published=timezone.now()
+            )
+            new_comment.save()
+            return HttpResponseRedirect(reverse('blog:post', args=(post_id,)))
         if 'set_mark_post' in request.POST:
             form = SetMarkPostForm(request.POST)
             val = request.POST.get("set_mark_post")
