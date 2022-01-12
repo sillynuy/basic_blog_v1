@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.db.models import F
 from django.core.paginator import Paginator
 from django.db.models import Count, Min, Max
+from django.contrib.auth.models import User
 
 from .models import Comment, Post
 from .forms import AddCommentForm, AddCommentFormAuth, AddPostForm, SetMarkPostForm
@@ -59,11 +60,11 @@ def post_details(request, post_id):
             new_comment.save()
             return HttpResponseRedirect(reverse('blog:post', args=(post_id,)))
         if 'add_comment_auth' in request.POST:
-            author = request.user.username
+            user = request.user
             text = request.POST.get('text')
             new_comment = Comment(
                 post=post,
-                author=author,
+                author=user,
                 text=text,
                 date_published=timezone.now()
             )
@@ -166,5 +167,12 @@ def most_commented(request):
 
 
 def profile(request, user_id):
-    return HttpResponse(f'Пользователь с ид {user_id}')
+    user = User.objects.get(id=user_id)
+    comments = Comment.objects.filter(author_id=user_id).order_by('-date_published')
+    context = {
+        'comments': comments,
+        'user': user
+    }
+    template = 'blog/profile.html'
+    return HttpResponse(render(request, template, context))
 
