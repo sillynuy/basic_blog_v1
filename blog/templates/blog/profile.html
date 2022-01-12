@@ -1,0 +1,18 @@
+{% extends 'blog_base.html' %}
+
+{% block title %}
+Профиль {{ user.username }} - Блог Никиты
+{% endblock title %}
+
+{% block content %}
+
+<h2>{{ user.username }} - комментарии пользователя</h2>
+
+{% if comments %}
+    {% for comment in comments %}
+        <h4>{{ comment.date_published|date:"j E Y, G:i" }} - к посту <b><a href="{% url 'blog:post' comment.post.id %}">{{ comment.post.headline }}</a></b></h4>
+        <p>{{ comment.text }}</p>
+    {% endfor %}
+{% endif %}
+
+{% endblock content %}

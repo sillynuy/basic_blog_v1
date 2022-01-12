@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.db.models import F
 from django.core.paginator import Paginator
 from django.db.models import Count, Min, Max
+from django.contrib.auth.models import User
 
 from .models import Comment, Post
 from .forms import AddCommentForm, AddCommentFormAuth, AddPostForm, SetMarkPostForm
@@ -166,5 +167,12 @@ def most_commented(request):
 
 
 def profile(request, user_id):
-    return HttpResponse(f'Пользователь с ид {user_id}')
+    user = User.objects.get(id=user_id)
+    comments = Comment.objects.filter(author_id=user_id).order_by('-date_published')
+    context = {
+        'comments': comments,
+        'user': user
+    }
+    template = 'blog/profile.html'
+    return HttpResponse(render(request, template, context))
 
