@@ -19,3 +19,9 @@ class Comment(models.Model):
     pos_marks = models.IntegerField(default=0)
     neg_marks = models.IntegerField(default=0)
     rating = models.IntegerField(default=0)
+
+
+class UsersMarks(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, default=None)
+    mark = models.SmallIntegerField()
