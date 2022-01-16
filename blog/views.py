@@ -7,7 +7,7 @@ from django.core.paginator import Paginator
 from django.db.models import Count, Min, Max
 from django.contrib.auth.models import User
 
-from .models import Comment, Post
+from .models import Comment, Post, UserPostMark
 from .forms import AddCommentForm, AddCommentFormAuth, AddPostForm, SetMarkPostForm
 
 
@@ -30,6 +30,7 @@ def index(request):
 
 def post_details(request, post_id):
     post = Post.objects.get(id=post_id)
+    mark = None
     if request.method == 'GET':
         # template = 'blog/post_detailed.html'
         template = 'blog/post_detailed.html'
@@ -38,6 +39,8 @@ def post_details(request, post_id):
         comment_form_auth = AddCommentFormAuth()
         mark_comment_form = SetMarkPostForm()
         comments = Comment.objects.filter(post=post_id)
+        # получение текущей оценки поста
+        # mark = UserPostMark.objects.get(user=request.user, post=post)
         context = {
             'post': post,
             'mark_form': mark_form,
@@ -45,6 +48,7 @@ def post_details(request, post_id):
             'comment_form_auth': comment_form_auth,
             'comments': comments,
             'mark_comment_form': mark_comment_form,
+            'mark': mark,
         }
         return HttpResponse(render(request, template, context))
     else:
@@ -70,15 +74,44 @@ def post_details(request, post_id):
             )
             new_comment.save()
             return HttpResponseRedirect(reverse('blog:post', args=(post_id,)))
+
         if 'set_mark_post' in request.POST:
             form = SetMarkPostForm(request.POST)
-            val = request.POST.get("set_mark_post")
-            if val == '+':
-                Post.objects.filter(id=post_id).update(pos_marks=F("pos_marks") + 1)
-            elif val == '-':
-                Post.objects.filter(id=post_id).update(neg_marks=F("neg_marks") + 1)
-            Post.objects.filter(id=post_id).update(rating=F("pos_marks") - F("neg_marks"))
-            return HttpResponseRedirect(reverse('blog:post', args=(post_id,)))
+
+            marks = {
+                '+': True,
+                '-': False
+            }
+
+            user = request.user
+            if isinstance(user, User):
+                val = request.POST.get("set_mark_post")
+                # проверить, есть ли в БД оценка
+                try:
+                    mark = UserPostMark.objects.get(user=request.user, post=post)
+                except UserPostMark.DoesNotExist:
+                    UserPostMark.objects.create(
+                        post=post,
+                        user=user,
+                        mark_positive=marks[val]
+                    )
+                else:
+                    UserPostMark.objects.update(
+                        post=post,
+                        user=user,
+                        mark_positive=marks[val]
+                    )
+                # обновление рейтинга поста
+                pos_marks = UserPostMark.objects.filter(post=post, mark_positive=True).count()
+                neg_marks = UserPostMark.objects.filter(post=post, mark_positive=False).count()
+                Post.objects.filter(id=post_id).update(pos_marks=pos_marks)
+                Post.objects.filter(id=post_id).update(neg_marks=neg_marks)
+                Post.objects.filter(id=post_id).update(rating=pos_marks-neg_marks)
+                return HttpResponseRedirect(reverse('blog:post', args=(post_id,)))
+            else:
+                return HttpResponse('не авторизован')
+
+
 
 
 def post_add(request):
