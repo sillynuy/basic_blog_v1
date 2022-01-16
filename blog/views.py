@@ -40,7 +40,13 @@ def post_details(request, post_id):
         mark_comment_form = SetMarkPostForm()
         comments = Comment.objects.filter(post=post_id)
         # получение текущей оценки поста
-        # mark = UserPostMark.objects.get(user=request.user, post=post)
+        try:
+            mark = UserPostMark.objects.get(user=request.user, post=post)
+        except UserPostMark.DoesNotExist:
+            pass
+        mark_value = None
+        if mark is not None:
+            mark_value = '+' if mark.mark_positive else '-'
         context = {
             'post': post,
             'mark_form': mark_form,
@@ -48,7 +54,7 @@ def post_details(request, post_id):
             'comment_form_auth': comment_form_auth,
             'comments': comments,
             'mark_comment_form': mark_comment_form,
-            'mark': mark,
+            'mark': mark_value,
         }
         return HttpResponse(render(request, template, context))
     else:
