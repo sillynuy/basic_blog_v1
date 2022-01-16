@@ -21,7 +21,11 @@ class Comment(models.Model):
     rating = models.IntegerField(default=0)
 
 
-class UsersMarks(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, default=None)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, default=None)
-    mark = models.SmallIntegerField()
+class UserPostMark(models.Model):
+    class Meta:
+        unique_together = (('user', 'post'),)
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    # mark = models.SmallIntegerField()
+    mark_positive = models.BooleanField(null=True)

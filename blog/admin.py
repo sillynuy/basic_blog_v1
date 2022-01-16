@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Post, Comment
+from .models import Post, Comment, UserPostMark
 
 
 class PostAdmin(admin.ModelAdmin):
@@ -30,5 +30,17 @@ class CommentAdmin(admin.ModelAdmin):
                     )
 
 
+class UserMarkAdmin(admin.ModelAdmin):
+    fields = ['post_id',
+              'user_id',
+              'mark_positive'
+              ]
+    list_display = ('post_id',
+                    'user_id',
+                    'mark_positive',
+                    'id')
+
+
 admin.site.register(Post, PostAdmin)
 admin.site.register(Comment, CommentAdmin)
+admin.site.register(UserPostMark, UserMarkAdmin)
