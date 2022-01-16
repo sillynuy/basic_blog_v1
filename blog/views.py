@@ -60,17 +60,6 @@ def post_details(request, post_id):
         }
         return HttpResponse(render(request, template, context))
     else:
-        if 'add_comment' in request.POST:
-            author = request.POST.get('author')
-            text = request.POST.get('text')
-            new_comment = Comment(
-                post=post,
-                author=author,
-                text=text,
-                date_published=timezone.now()
-            )
-            new_comment.save()
-            return HttpResponseRedirect(reverse('blog:post', args=(post_id,)))
         if 'add_comment_auth' in request.POST:
             user = request.user
             text = request.POST.get('text')
