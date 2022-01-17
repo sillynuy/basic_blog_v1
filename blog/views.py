@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
 from django.utils import timezone
 from django.urls import reverse
 from django.db.models import F
@@ -29,7 +29,8 @@ def index(request):
 
 
 def post_details(request, post_id):
-    post = Post.objects.get(id=post_id)
+    # post = Post.objects.get(id=post_id)
+    post = get_object_or_404(Post, id=post_id)
     mark = None
     if request.method == 'GET':
         # template = 'blog/post_detailed.html'
@@ -58,7 +59,8 @@ def post_details(request, post_id):
             'mark_comment_form': mark_comment_form,
             'mark': mark_value,
         }
-        return HttpResponse(render(request, template, context))
+        # return HttpResponse(render(request, template, context))
+        return HttpResponseNotFound(render(request, template, context))
     else:
         if 'add_comment_auth' in request.POST:
             user = request.user
@@ -107,8 +109,6 @@ def post_details(request, post_id):
                 return HttpResponseRedirect(reverse('blog:post', args=(post_id,)))
             else:
                 return HttpResponse('не авторизован')
-
-
 
 
 def post_add(request):
@@ -206,3 +206,14 @@ def profile(request, user_id):
     template = 'blog/profile.html'
     return HttpResponse(render(request, template, context))
 
+
+def handler404(request, exception, template_name="blog/404.html"):
+    response = render(request, template_name)
+    response.status_code = 404
+    return response
+
+
+def handler500(request, template_name="blog/500.html"):
+    response = render(request, template_name)
+    response.status_code = 500
+    return response
