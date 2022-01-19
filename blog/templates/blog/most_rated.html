@@ -1,17 +1,49 @@
 {% extends "blog_base.html" %}
 
 {% block content %}
-<h2>Топ записей по оценкам</h2>
-    {% if posts %}
-        {% for post in posts %}
-            <ul>
-                <li>
-                    <h3>{{ post.date_published|date:"j E Y, G:i:s" }}</h3>
-                    <h2><a href="{% url 'blog:post' post.id %}">{{ post.headline }}</a></h2>
-                    <p>{{ post.text|truncatewords:25 }}</p>
-                    <p>Рейтинг: {{ post.rating }} (+{{ post.pos_marks }}-{{ post.neg_marks }})</p>
-                </li>
-            </ul>
-        {% endfor %}
-    {% endif %}
+<div class="container">
+    <div class="row">
+        <div class="col py-2 bg-light text">
+            <h2>Топ записей по оценкам</h2>
+        </div>
+        {% if posts %}
+            {% for post in posts %}
+            <div class="container pt-3 my-1 bg-light">
+                <div class="row">
+                    <div class="col-9">
+                        <h4><a href="{% url 'blog:post' post.id %}">{{ post.headline }}</a></h4>
+                    </div>
+                    <div class="col-3 text-secondary">
+                        <h6>{{ post.date_published|date:"j E Y, G:i" }}</h6>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <p>{{ post.text|truncatewords:25 }}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        {% if post.rating > 0 %}
+                        <div class="col-12 bg-light text-success">
+                            <h6 title="+{{ post.pos_marks }}-{{ post.neg_marks }}">Рейтинг: {{ post.rating }}</h6>
+                        </div>
+                        {% elif post.rating < 0 %}
+                        <div class="col-12 bg-light text-danger">
+                            <h6 title="+{{ post.pos_marks }}-{{ post.neg_marks }}">Рейтинг: {{ post.rating }}</h6>
+                        </div>
+                        {% else %}
+                        <div class="col-12 bg-light text-muted">
+                            <h6 title="+{{ post.pos_marks }}-{{ post.neg_marks }}">Рейтинг: {{ post.rating }}</h6>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>В блоге пока нет постов.</p>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}

@@ -12,8 +12,8 @@
                 <div class="col-9">
                     <h4><a href="{% url 'blog:post' post.id %}">{{ post.headline }}</a></h4>
                 </div>
-                <div class="col-3">
-                    <h6 style="color:#708090">{{ post.date_published|date:"j E Y, G:i" }}</h6>
+                <div class="col-3 text-secondary">
+                    <h6>{{ post.date_published|date:"j E Y, G:i" }}</h6>
                 </div>
             </div>
             <div class="row">
