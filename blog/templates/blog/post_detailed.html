@@ -5,44 +5,74 @@
 {% endblock %}
 
 {% block content %}
-    <h2>{{ post.headline }}</h2>
-
-    <a href="{% url 'blog:post_edit' post.id %}">Редактировать</a>
-    <a href="{% url 'blog:post_delete' post.id %}">Удалить</a>
-
-    <h3>{{ post.date_published|date:"j E Y, G:i" }}</h3>
-    <p>{{ post.text|linebreaks }}</p>
-    <p>Рейтинг поста: {{ post.rating }} (+{{ post.pos_marks }}-{{ post.neg_marks }})</p>
-
-    <h3>Добавить комментарий</h3>
-    {% if user.is_authenticated %}
-        <form method="post">
-            {% csrf_token %}
-            <input type="submit" name="set_mark_post" value="+">
-            <input type="submit" name="set_mark_post" value="-">
-        </form>
-        {% if mark %}
-            <p>Ваша оценка: {{ mark }}</p>
+    <div class="container mt-1 pt-1">
+        <div class="row">
+            <div class="col-9 bg-light">
+                <h6>{{ post.date_published|date:"j E Y, G:i" }}</h6>
+                <h2>{{ post.headline }}</h2>
+            </div>
+            <div class="col-3 bg-white">
+                <a href="{% url 'blog:post_edit' post.id %}">Редактировать</a>
+                <a href="{% url 'blog:post_delete' post.id %}">Удалить</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 bg-light">
+                <p>{{ post.text|linebreaks }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 bg-light text-primary">
+                <p>Рейтинг поста: {{ post.rating }} (+{{ post.pos_marks }}-{{ post.neg_marks }})</p>
+            </div>
+        </div>
+        {% if user.is_authenticated %}
+        <div class="row">
+            <div class="col-1 bg-light py-2 d-flex justify-content-center">
+                <form method="post">
+                    {% csrf_token %}
+                    <input type="submit" name="set_mark_post" value="+">
+                    <input type="submit" name="set_mark_post" value="-">
+                </form>
+            </div>
+            <div class="col-11 bg-light py-2">
+                {% if mark %}
+                    Ваша оценка: {{ mark }}
+                {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col bg-light py-2">
+                <h4>Добавить комментарий</h4>
+                <form method="post">
+                    {% csrf_token %}
+                    <table>
+                        {{ comment_form_auth }}
+                    </table>
+                    <input type="submit" value="Отправить" name="add_comment_auth">
+                </form>
+            </div>
+        </div>
+        {% else %}
+        <div class="row">
+            <div class="col bg-light py-2">
+                <p><a href="{% url 'login' %}">Авторизуйтесь</a>, чтобы иметь возможность оставлять комментарии и оценивать посты.</p>
+            </div>
+        </div>
         {% endif %}
-        <form method="post">
-            {% csrf_token %}
-            <table>
-                {{ comment_form_auth }}
-            </table>
-            <input type="submit" value="Отправить" name="add_comment_auth">
-        </form>
-    {% else %}
-        <p><a href="{% url 'login' %}">Авторизуйтесь</a>, чтобы иметь возможность оставлять комментарии и оценивать посты.</p>
-    {% endif %}
-    <h2>Комментарии</h2>
-    {% if comments %}
-        <h3>Всего комментариев к записи - {{ comments|length }}</h3>
-        {% for comment in comments %}
-            <h5>{{ comment.date_published }}</h5>
-            <h4><a href="{% url 'blog:profile' comment.author_id %}">{{ comment.author }}</a></h4>
-            <p>{{ comment.text }}</p>
-        {% endfor %}
-    {% else %}
-        <p>Комментариев пока нет</p>
-    {% endif %}
+        <div class="row">
+            <div class="col bg-light pt-1 pb-3 mb-3">
+                <h4>Комментарии (всего: {{ comments|length }})</h4>
+                {% if comments %}
+                    {% for comment in comments %}
+                        <h6>{{ comment.date_published|date:"j E Y, G:i" }}</h6>
+                        <h6><a href="{% url 'blog:profile' comment.author_id %}">{{ comment.author }}</a></h6>
+                        {{ comment.text }}
+                    {% endfor %}
+                {% else %}
+                    <p>Комментариев пока нет.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
 {% endblock %}
