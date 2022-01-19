@@ -1,16 +1,28 @@
 <nav>
-    <a href="{% url 'blog:index' %}">Главная</a>
-    <a href="{% url 'blog:post_add' %}">Добавить пост</a>
-    <a href="{% url 'blog:most_rated' %}">Самое оцениваемое</a>
-    <a href="{% url 'blog:most_commented' %}">Самое комментируемое</a>
-    <div>
-        {% if user.is_authenticated %}
-            <h4>Профиль: <a href="{% url 'blog:profile' user.id %}">{{ user.username }}</a></h4>
-            <p><a href="{% url 'logout' %}">Выйти</a></p>
-        {% else %}
-            <a href="{% url 'login' %}">Войти</a>
-            <a href="{% url 'signup' %}">Регистрация</a>
-        {% endif %}
+    <div class="container">
+        <div class="row">
+            <div class="col-9 bg-info text-white py-2">
+                <h2>Литературный блог Никиты</h2>
+            </div>
+            <div class="col-3 bg-secondary py-2 text-white">
+                {% if user.is_authenticated %}
+                    <h6>Профиль: <a href="{% url 'blog:profile' user.id %}" class="link-warning">{{ user.username }}</a></h6>
+                    <p><a href="{% url 'logout' %}" class="link-warning">Выйти</a></p>
+                {% else %}
+                    <a href="{% url 'login' %}" class="link-warning">Войти</a><br>
+                    <a href="{% url 'signup' %}" class="link-warning">Регистрация</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 bg-dark text-white pb-1">
+                <a href="{% url 'blog:index' %}" class="link-light">Главная</a> |
+                <a href="{% url 'blog:post_add' %}" class="link-light">Добавить пост</a> |
+                <a href="{% url 'blog:most_rated' %}" class="link-light">Самое оцениваемое</a> |
+                <a href="{% url 'blog:most_commented' %}" class="link-light">Самое комментируемое</a>
+            </div>
+        </div>
     </div>
+
 
 </nav>
