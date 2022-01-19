@@ -3,7 +3,7 @@ from django import forms
 
 class AddPostForm(forms.Form):
     headline = forms.CharField(label='Заголовок', max_length=40)
-    text = forms.CharField(label='Текст', widget=forms.Textarea)
+    text = forms.CharField(label='Текст', widget=forms.Textarea(attrs={'rows': 30, 'cols': 70}))
 
 
 """
@@ -23,7 +23,7 @@ class AddCommentForm(forms.Form):
 
 class AddCommentFormAuth(forms.Form):
     author = forms.CharField(widget=forms.HiddenInput(), required=False)
-    text = forms.CharField(label='Комментарий', widget=forms.Textarea)
+    text = forms.CharField(label='Комментарий', widget=forms.Textarea(attrs={'rows': 3, 'cols': 70}))
 
 
 class ConfirmPostDelete(forms.Form):
