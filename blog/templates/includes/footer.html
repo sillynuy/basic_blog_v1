@@ -1,0 +1,5 @@
+<div class="container bg-light mt-2 py-2">
+    <p>Всего записей в блоге: {{ posts.count }}</p>
+    <p>Первая запись: {{ oldest|date:"j E Y" }}</p>
+    <p>Последняя запись: {{ newest|date:"j E Y" }}</p>
+</div>
