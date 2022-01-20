@@ -1,16 +1,26 @@
 {% extends "blog_base.html" %}
 
 {% block title %}
-    Редактирование поста "{{ post.headline }}"
+    Редактирование поста "{{ post.headline }}" - Блог Никиты
 {% endblock %}
 
 {% block content %}
-    <h2>Редактировать пост <i>{{ post.headline }}</i></h2>
-    <form method="POST">
-        {% csrf_token %}
-        <table>
-            {{ form }}
-        </table>
-        <input type="submit" value="Send">
-    </form>
+<div class="container">
+    <div class="row">
+        <div class="col bg-white py-2">
+            <h2>Редактировать пост <i>{{ post.headline }}</i></h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col bg-light">
+            <form method="POST">
+                {% csrf_token %}
+                <table>
+                    {{ form }}
+                </table>
+                <input type="submit" value="Send">
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

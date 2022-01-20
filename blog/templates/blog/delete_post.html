@@ -1,14 +1,24 @@
 {% extends 'blog_base.html' %}
 
 {% block title %}
-    Удаление поста
+    Удалить пост - Блог Никиты
 {% endblock %}
 
 {% block content %}
-    <h2>Удалить пост <i>{{ post.headline }}</i>?</h2>
-    <form method="POST">
-        {% csrf_token %}
-        <input type="submit" name="post_delete_confirmation" value="Да">
-        <input type="submit" name="post_delete_confirmation" value="Нет">
-    </form>
+<div class="container">
+    <div class="row">
+        <div class="col bg-light mt-2">
+            <h2>Удалить пост <i>{{ post.headline }}</i>?</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col bg-light py-2">
+            <form method="POST">
+                {% csrf_token %}
+                <input type="submit" name="post_delete_confirmation" value="Да">
+                <input type="submit" name="post_delete_confirmation" value="Нет">
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

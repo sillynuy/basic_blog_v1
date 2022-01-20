@@ -1,42 +1,84 @@
 {% extends "blog_base.html" %}
 
 {% block title %}
-    Литературный Блог Никиты - Главная страница
+    Главная страница - Блог Никиты
 {% endblock %}
 
 {% block content %}
     {% if posts %}
-        <h3>Всего записей в блоге: {{ posts.count }}</h3>
-        <h4>Первая запись: {{ oldest|date:"j E Y" }}</h4>
-        <h4>Последняя запись: {{ newest|date:"j E Y" }}</h4>
-        <ul>
-            {% for post in page_obj %}
-            <li>
-                <h3>{{ post.date_published|date:"j E Y, G:i:s" }}</h3>
-                <h2><a href="{% url 'blog:post' post.id %}">{{ post.headline }}</a></h2>
-                <p>{{ post.text|truncatewords:25 }}</p>
-                <p>Рейтинг: {{ post.rating }} (+{{ post.pos_marks }}-{{ post.neg_marks }})</p>
-            </li>
-            {% endfor %}
-        </ul>
-        <div class="pagination">
-            <span class="step-links">
-                {% if page_obj.has_previous %}
-                    <a href="?page=1">На первую страницу</a>
-                    <a href="?page={{ page_obj.previous_page_number }}">Назад</a>
-                {% endif %}
-
-                <span class="current">
-                    Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
-                </span>
-
-                {% if page_obj.has_next %}
-                    <a href="?page={{ page_obj.next_page_number }}">Вперёд</a>
-                    <a href="?page={{ page_obj.paginator.num_pages }}">На последнюю страницу</a>
-                {% endif %}
-            </span>
+        {% for post in page_obj %}
+        <div class="container pt-3 my-1 bg-light">
+            <div class="row">
+                <div class="col-9">
+                    <h4><a href="{% url 'blog:post' post.id %}">{{ post.headline }}</a></h4>
+                </div>
+                <div class="col-3 text-secondary">
+                    <h6>{{ post.date_published|date:"j E Y, G:i" }}</h6>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <p>{{ post.text|truncatewords:25 }}</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    {% if post.rating > 0 %}
+                    <div class="col-12 bg-light text-success">
+                        <h6 title="+{{ post.pos_marks }}-{{ post.neg_marks }}">Рейтинг: {{ post.rating }}</h6>
+                    </div>
+                    {% elif post.rating < 0 %}
+                    <div class="col-12 bg-light text-danger">
+                        <h6 title="+{{ post.pos_marks }}-{{ post.neg_marks }}">Рейтинг: {{ post.rating }}</h6>
+                    </div>
+                    {% else %}
+                    <div class="col-12 bg-light text-muted">
+                        <h6 title="+{{ post.pos_marks }}-{{ post.neg_marks }}">Рейтинг: {{ post.rating }}</h6>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
         </div>
+        {% endfor %}
+
+        <div class="container bg-white">
+            <div class="col-8 offset-md-2 d-flex justify-content-center py-1">
+                <div class="pagination">
+                    <span class="step-links">
+                        {% if page_obj.has_previous %}
+                            <a href="?page=1">На первую страницу</a>
+                            <a href="?page={{ page_obj.previous_page_number }}">Назад</a>
+                        {% endif %}
+
+                        <span class="current">
+                            Страница {{ page_obj.number }} из {{ page_obj.paginator.num_pages }}
+                        </span>
+
+                        {% if page_obj.has_next %}
+                            <a href="?page={{ page_obj.next_page_number }}">Вперёд</a>
+                            <a href="?page={{ page_obj.paginator.num_pages }}">На последнюю страницу</a>
+                        {% endif %}
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col bg-secondary text-white mt-2 py-2" align="center">
+                    Всего записей в блоге: {{ posts.count }}<br>
+                    первая запись: {{ oldest|date:"j E Y" }}<br>
+                    последняя запись: {{ newest|date:"j E Y" }}
+                </div>
+            </div>
+        </div>
+
     {% else %}
-        <p>В блоге нет постов</p>
+    <div class="container">
+        <div class="row">
+            <div class="col pt-3 my-1 bg-light">
+                <p>В блоге нет постов.</p>
+            </div>
+        </div>
+    </div>
     {% endif %}
 {% endblock %}

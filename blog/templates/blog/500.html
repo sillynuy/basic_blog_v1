@@ -1,2 +1,27 @@
-<h1>500 Server Error bbbbbb</h1>
-<p>My Custom 500 Server Error!</p>
+{% extends 'blog_base.html' %}
+
+{% block title %}
+Ошибка 500 - внутренняя ошибка сервера - Блог Никиты
+{% endblock title %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col bg-white py-2 d-flex justify-content-center">
+            <h1>500 - внутренняя ошибка сервера</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col bg-light d-flex justify-content-center">
+            <img src="https://cdn1.iconfinder.com/data/icons/browser-5/100/ui-brower-go-25-512.png" alt="" width="250px">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col bg-light d-flex justify-content-center">
+            <p>Ваш запрос не может быть выполнен. Возможно временно. Но это не точно.</p>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

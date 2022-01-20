@@ -33,7 +33,6 @@ def post_details(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     mark = None
     if request.method == 'GET':
-        # template = 'blog/post_detailed.html'
         template = 'blog/post_detailed.html'
         mark_form = SetMarkPostForm()
         comment_form = AddCommentForm()
@@ -201,7 +200,7 @@ def profile(request, user_id):
     comments = Comment.objects.filter(author_id=user_id).order_by('-date_published')
     context = {
         'comments': comments,
-        'user': user
+        'profile': user
     }
     template = 'blog/profile.html'
     return HttpResponse(render(request, template, context))

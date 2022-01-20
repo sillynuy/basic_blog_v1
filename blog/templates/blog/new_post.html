@@ -1,16 +1,28 @@
 {% extends "blog_base.html" %}
 
 {% block title %}
-    Добавить пост
+    Новый пост - Блог Никиты
 {% endblock %}
 
 {% block content %}
-    <h2>Создать пост</h2>
-    <form method="POST">
-        {% csrf_token %}
-        <table>
-            {{ form }}
-        </table>
-        <input type="submit" value="Send">
-    </form>
+
+<div class="container">
+    <div class="row">
+        <div class="col py-2 bg-light">
+            <h2>Добавить пост</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col py-2 bg-white">
+            <form method="POST">
+                {% csrf_token %}
+                <table>
+                    {{ form }}
+                </table>
+                <input type="submit" value="Отправить">
+            </form>
+        </div>
+    </div>
+</div>
+
 {% endblock %}
