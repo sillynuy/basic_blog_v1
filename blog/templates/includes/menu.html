@@ -7,7 +7,7 @@
             <div class="col-3 bg-secondary py-2 text-white">
                 {% if user.is_authenticated %}
                     <h6>Профиль: <a href="{% url 'blog:profile' user.id %}" class="link-warning">{{ user.username }}</a></h6>
-                    <p><a href="{% url 'logout' %}" class="link-warning">Выйти</a></p>
+                    <a href="{% url 'logout' %}" class="link-warning">Выйти</a>
                 {% else %}
                     <a href="{% url 'login' %}" class="link-warning">Войти</a><br>
                     <a href="{% url 'signup' %}" class="link-warning">Регистрация</a>
