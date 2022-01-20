@@ -39,11 +39,27 @@
         {% if user.is_authenticated %}
         <div class="row">
             <div class="col-1 bg-light py-2 d-flex justify-content-center">
-                <form method="post">
-                    {% csrf_token %}
-                    <input type="submit" name="set_mark_post" value="+">
-                    <input type="submit" name="set_mark_post" value="-">
-                </form>
+                {% if mark %}
+                    {% if mark == '+' %}
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="submit" name="set_mark_post" value="+" class="btn btn-success">
+                            <input type="submit" name="set_mark_post" value="-" class="btn btn-outline-danger">
+                        </form>
+                    {% else %}
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="submit" name="set_mark_post" value="+" class="btn btn-outline-success">
+                            <input type="submit" name="set_mark_post" value="-" class="btn btn-danger">
+                        </form>
+                    {% endif %}
+                {% else %}
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="submit" name="set_mark_post" value="+" class="btn btn-outline-success">
+                        <input type="submit" name="set_mark_post" value="-" class="btn btn-outline-danger">
+                    </form>
+                {% endif %}
             </div>
             <div class="col-11 bg-light py-2">
                 {% if mark %}
