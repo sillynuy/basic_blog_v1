@@ -14,12 +14,13 @@
     </div>
     <div class="row">
         <div class="col bg-light">
-            <h6>Последний вход на сайт: {{ profile.username }}</h6>
+            <p>Дата регистрации: {{ profile.date_joined|date:"j E Y, G:i" }}</p>
+            <p>Последний вход на сайт: {{ profile.last_login|date:"j E Y, G:i" }}</p>
         </div>
     </div>
     <div class="row">
         <div class="col py-2 bg-light">
-            <h3>Комментарии пользователя</h3>
+            <h3>Комментарии пользователя ({{ comments|length }})</h3>
         </div>
     </div>
     <div class="row">
