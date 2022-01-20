@@ -200,7 +200,7 @@ def profile(request, user_id):
     comments = Comment.objects.filter(author_id=user_id).order_by('-date_published')
     context = {
         'comments': comments,
-        'user': user
+        'profile': user
     }
     template = 'blog/profile.html'
     return HttpResponse(render(request, template, context))
