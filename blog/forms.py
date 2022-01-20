@@ -2,7 +2,7 @@ from django import forms
 
 
 class AddPostForm(forms.Form):
-    headline = forms.CharField(label='Заголовок', max_length=40)
+    headline = forms.CharField(label='Заголовок', widget=forms.Textarea(attrs={'rows': 1, 'cols': 70}))
     text = forms.CharField(label='Текст', widget=forms.Textarea(attrs={'rows': 30, 'cols': 70}))
 
 

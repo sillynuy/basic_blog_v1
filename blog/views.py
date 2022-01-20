@@ -33,7 +33,6 @@ def post_details(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     mark = None
     if request.method == 'GET':
-        # template = 'blog/post_detailed.html'
         template = 'blog/post_detailed.html'
         mark_form = SetMarkPostForm()
         comment_form = AddCommentForm()
