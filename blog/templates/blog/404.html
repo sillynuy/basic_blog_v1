@@ -1,2 +1,32 @@
-<h1>404 Page Not Found aaaaa</h1>
-<p>My Custom 404 Page Not Found!</p>
+{% extends 'blog_base.html' %}
+
+{% block title %}
+    Ошибка 404 - такой страницы не существует - Блог Никиты
+{% endblock title %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col bg-white py-2 d-flex justify-content-center">
+            <h1>Что-то пошло не так...</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col bg-light d-flex justify-content-center">
+            <img src="https://www.404.ie/assets/img/logo_blue.png" alt="" width="800px">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col bg-light d-flex justify-content-center">
+            <p>Возможно, вас не существует. Как и объективной реальности.</p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col bg-light d-flex justify-content-center">
+            <p>Но одно можно сказать наверняка - запрошенной вами страницы не существует на сервере.</p>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
