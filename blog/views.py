@@ -29,7 +29,6 @@ def index(request):
 
 
 def post_details(request, post_id):
-    # post = Post.objects.get(id=post_id)
     post = get_object_or_404(Post, id=post_id)
     mark = None
     if request.method == 'GET':
@@ -58,7 +57,6 @@ def post_details(request, post_id):
             'mark_comment_form': mark_comment_form,
             'mark': mark_value,
         }
-        # return HttpResponse(render(request, template, context))
         return HttpResponseNotFound(render(request, template, context))
     else:
         if 'add_comment_auth' in request.POST:
@@ -94,11 +92,13 @@ def post_details(request, post_id):
                         mark_positive=marks[val]
                     )
                 else:
-                    UserPostMark.objects.update(
-                        post=post,
-                        user=user,
-                        mark_positive=marks[val]
-                    )
+                    if mark.mark_positive != marks[val]:
+                        UserPostMark.objects.filter(user=request.user, post=post).update(
+                            mark_positive=marks[val]
+                        )
+                    else:
+                        UserPostMark.objects.filter(user=request.user, post=post).delete()
+
                 # обновление рейтинга поста
                 pos_marks = UserPostMark.objects.filter(post=post, mark_positive=True).count()
                 neg_marks = UserPostMark.objects.filter(post=post, mark_positive=False).count()
@@ -106,8 +106,6 @@ def post_details(request, post_id):
                 Post.objects.filter(id=post_id).update(neg_marks=neg_marks)
                 Post.objects.filter(id=post_id).update(rating=pos_marks-neg_marks)
                 return HttpResponseRedirect(reverse('blog:post', args=(post_id,)))
-            else:
-                return HttpResponse('не авторизован')
 
 
 def post_add(request):
